@@ -1,6 +1,6 @@
 package com.pj.dasee.global.config;
 
-import com.pj.dasee.domain.user.application.UserDetailService;
+import com.pj.dasee.domain.user.application.UserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,21 +19,25 @@ import java.util.stream.Stream;
 @Configuration
 @EnableWebSecurity /* spring security filter가 spring filterchain에 등록 */
 @EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
-public class WebSecurityConfig {
+public class WebSecurityConfig{
 
-    private final UserDetailService userService;
+    private final UserDetailsService userService;
+    private final CustomAuthFailureHandler customAuthFailureHandler;
 
     private static final String[] PERMIT_ALL_PATTERNS = new String[] {
-            "/login",
-            "/signup",
-            "/user"
+            "/loginForm",
+            "/registerForm",
+            "/register"
     };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests()
+        http.csrf().disable();
+        http.headers().frameOptions().sameOrigin();
+
+        http.authorizeHttpRequests()
                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
-                .requestMatchers( // <== 여기
+                .requestMatchers(
                         Stream
                                 .of(PERMIT_ALL_PATTERNS)
                                 .map(AntPathRequestMatcher::antMatcher)
@@ -43,23 +47,23 @@ public class WebSecurityConfig {
 
                 .and()
                 .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/index")
+                .loginPage("/loginForm")
+                .loginProcessingUrl("/login")
+                .failureHandler(customAuthFailureHandler)
+                .defaultSuccessUrl("/")
 
                 .and()
                 .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
+                .logoutSuccessUrl("/loginForm")
                 .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
+                .deleteCookies("JSESSIONID");
 
-                .and()
-                .csrf().disable()
-                .build();
+        return http.build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailService userDetailService) throws Exception {
+    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder, UserDetailsService userDetailsService) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
                 .userDetailsService(userService)
                 .passwordEncoder(bCryptPasswordEncoder)

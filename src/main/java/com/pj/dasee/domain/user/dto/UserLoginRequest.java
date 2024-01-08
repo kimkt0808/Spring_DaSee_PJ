@@ -3,9 +3,9 @@ package com.pj.dasee.domain.user.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
-public class UserDto {
+@Getter
+public class UserLoginRequest {
 
     private String email;
     private String password;
