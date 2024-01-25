@@ -1,5 +1,6 @@
 package com.pj.dasee.domain.user.domain;
 
+import com.pj.dasee.domain.item.domain.Item;
 import com.pj.dasee.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -32,6 +34,9 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     @Column(name = "password")
     private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Item> items = new ArrayList<>();
 
     @Builder
     public User(String nickname, String email, String password, String auth) {

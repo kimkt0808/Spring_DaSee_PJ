@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
+    <title>readItem</title>
 </head>
 <body>
     <table class="table">
@@ -16,16 +16,17 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="item: ${itemList}">
+        <tr th:each="item: ${items}">
             <th th:text="${item.id}"></th>
-            <td><a th:href="@{/api/items/{id}(id=${item.id})}" th:text="${item.title}">Title</a></td>
+            <td th:text="${item.title}"></td>
             <td th:text="${item.price}"></td>
             <td th:text="${item.description}"></td>
             <td th:text="${item.user.getNickname()}"></td>
         </tr>
         </tbody>
     </table>
-    <button type="button" class="btn btn-success" onclick="location.href='/api/items/createItemForm'">아이템 등록</button>
-    <button type="button" class="btn btn-secondary" onclick="location.href='/logout'">로그아웃</button>
+    <button type="button" class="btn btn-success" th:onclick="'location.href=\'/api/items/' + ${items.id} + '/editItemForm\''">Edit</button>
+    <button type="button" class="btn btn-success" th:onclick="'location.href=\'/api/items/' + ${items.id} + '/delete\''">Delete</button>
+    <button type="button" class="btn btn-secondary" onclick="location.href='/'">메인 페이지로 이동</button>
 </body>
 </html>

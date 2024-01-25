@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>editItem</title>
+</head>
+<body>
+<form class="container" th:action="@{/api/items/edit}" method="POST">
+    <input name="id" type="hidden" th:value="${items.id}">
+    <div class="mb-3">
+        <label class="form-label">제목</label>
+        <label>
+            <input type="text" class="form-control" name="title" th:value="${items.title}">
+        </label>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">가격</label>
+        <label>
+            <input type="text" class="form-control" name="price" th:value="${items.price}">
+        </label>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">내용</label>
+        <label>
+            <textarea class="form-control" rows="3" name="description" th:text="${items.description}"></textarea>
+        </label>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="button" class="btn btn-danger" onclick="location.href='/'">Back</button>
+</form>
+</body>
+</html>
