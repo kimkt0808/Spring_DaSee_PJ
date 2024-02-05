@@ -1,6 +1,7 @@
 package com.pj.dasee.domain.user.domain;
 
 import com.pj.dasee.domain.item.domain.Item;
+import com.pj.dasee.domain.profile.domain.Profile;
 import com.pj.dasee.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -37,6 +38,9 @@ public class User extends BaseTimeEntity implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Item> items = new ArrayList<>();
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Profile profile;
 
     @Builder
     public User(String nickname, String email, String password, String auth) {

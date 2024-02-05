@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+    <h1>User Profile</h1>
+    <div>
+        <p><strong>Email:</strong> <span th:text="${profiles.user.getEmail()}"></span></p>
+        <p><strong>Nickname:</strong> <span th:text="${profiles.user.getNickname()}"></span></p>
+        <p><strong>Name:</strong> <span th:text="${profiles.name}"></span></p>
+    </div>
+    <button type="button" class="btn btn-success" th:onclick="'location.href=\'/profiles/' + ${profiles.id} + '/editProfileForm\''">Edit</button>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>editProfile</title>
+</head>
+<body>
+<form class="container" th:action="@{/profiles/edit}" method="POST">
+    <input name="id" type="hidden" th:value="${profiles.id}">
+    <div class="mb-3">
+        <label class="form-label">이름</label>
+        <label>
+            <input type="text" class="form-control" name="name" th:value="${profiles.name}">
+        </label>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="button" class="btn btn-success" th:onclick="'location.href=\'/profiles/' + ${profiles.id} + '\''">Back</button>
+</form>
+</body>
+</html>
